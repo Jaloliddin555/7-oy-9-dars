@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обмен валют</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: darkcyan;
+        }
+        .container {
+            background-color: orange;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        async function convertCurrency() {
+            let amount = document.getElementById("amount").value;
+            let fromCurrency = document.getElementById("from").value;
+            let toCurrency = document.getElementById("to").value;
+            let resultElement = document.getElementById("result");
+
+            if (amount === "" || amount <= 0) {
+                resultElement.innerText = "Bor sonni yoz";
+                return;
+            }
+
+            try {
+                let response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
+                let data = await response.json();
+                let rate = data.rates[toCurrency];
+
+                if (rate) {
+                    let convertedAmount = (amount * rate).toFixed(2);
+                    resultElement.innerText = `Chiqqani: ${convertedAmount} ${toCurrency.toUpperCase()}`;
+                } else {
+                    resultElement.innerText = "Valyuta kursi topilmadi";
+                }
+            } catch (error) {
+                resultElement.innerText = "Valyuta kursi hatosi";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Valyuta Almashtirish</h1>
+    <div class="container">
+        <label for="amount">Summa:</label>
+        <input type="number" id="amount" placeholder="Введите сумму">
+
+        <label for="from">1-valyutadan:</label>
+        <select id="from">
+            <option value="USD">USD (Доллар США)</option>
+            <option value="EUR">EUR (Евро)</option>
+            <option value="RUB">RUB (Российский рубль)</option>
+            <option value="GBP">GBP (Фунт стерлингов)</option>
+            <option value="JPY">JPY (Японская иена)</option>
+            <option value="CNY">CNY (Китайский юань)</option>
+            <option value="UZS">UZS (Узбекский сум)</option>
+            <option value="AUD">AUD (Австралийский доллар)</option>
+            <option value="CAD">CAD (Канадский доллар)</option>
+            <option value="CHF">CHF (Швейцарский франк)</option>
+            <option value="SEK">SEK (Шведская крона)</option>
+            <option value="NZD">NZD (Новозеландский доллар)</option>
+            <option value="SGD">SGD (Сингапурский доллар)</option>
+            <option value="HKD">HKD (Гонконгский доллар)</option>
+            <option value="NOK">NOK (Норвежская крона)</option>
+            <option value="KRW">KRW (Южнокорейская вона)</option>
+            <option value="BRL">BRL (Бразильский реал)</option>
+            <option value="MXN">MXN (Мексиканский песо)</option>
+            <option value="INR">INR (Индийская рупия)</option>
+            <option value="ZAR">ZAR (Южноафриканский рэнд)</option>
+            <option value="TRY">TRY (Турецкая лира)</option>
+            <option value="PLN">PLN (Польский злотый)</option>
+            <option value="THB">THB (Тайский бат)</option>
+            <option value="IDR">IDR (Индонезийская рупия)</option>
+        </select>
+
+        <label for="to">2-valyutada:</label>
+        <select id="to">
+            <option value="USD">USD (Доллар США)</option>
+            <option value="EUR">EUR (Евро)</option>
+            <option value="RUB">RUB (Российский рубль)</option>
+            <option value="GBP">GBP (Фунт стерлингов)</option>
+            <option value="JPY">JPY (Японская иена)</option>
+            <option value="CNY">CNY (Китайский юань)</option>
+            <option value="UZS">UZS (Узбекский сум)</option>
+            <option value="AUD">AUD (Австралийский доллар)</option>
+            <option value="CAD">CAD (Канадский доллар)</option>
+            <option value="CHF">CHF (Швейцарский франк)</option>
+            <option value="SEK">SEK (Шведская крона)</option>
+            <option value="NZD">NZD (Новозеландский доллар)</option>
+            <option value="SGD">SGD (Сингапурский доллар)</option>
+            <option value="HKD">HKD (Гонконгский доллар)</option>
+            <option value="NOK">NOK (Норвежская крона)</option>
+            <option value="KRW">KRW (Южнокорейская вона)</option>
+            <option value="BRL">BRL (Бразильский реал)</option>
+            <option value="MXN">MXN (Мексиканский песо)</option>
+            <option value="INR">INR (Индийская рупия)</option>
+            <option value="ZAR">ZAR (Южноафриканский рэнд)</option>
+            <option value="TRY">TRY (Турецкая лира)</option>
+            <option value="PLN">PLN (Польский злотый)</option>
+            <option value="THB">THB (Тайский бат)</option>
+            <option value="IDR">IDR (Индонезийская рупия)</option>
+        </select>
+
+        <button onclick="convertCurrency()">Almashtirish</button>
+        <p id="result"></p>
+    </div>
+</body>
+</html>
